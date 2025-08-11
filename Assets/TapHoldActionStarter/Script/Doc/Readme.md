@@ -113,6 +113,68 @@ The modules are decoupled (input, state, physics), so you can swap the “sword�
 
 ---
 
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│                        SWORD PHYSICS SYSTEM                     │
+└─────────────────────────────────────────────────────────────────┘
+
+                        ┌─────────────────────┐
+                        │   SwordController   │
+                        │   (COORDINATOR)     │
+                        ├─────────────────────┤
+                        │ - inputHandler      │
+                        │ - physicsEngine     │
+                        │ - stateManager      │
+                        │ + rb: Rigidbody     │
+                        ├─────────────────────┤
+                        │ + StartStage1()     │
+                        │ + StartStage2()     │
+                        │ + ResetToInitial()  │
+                        └─────────┬───────────┘
+                                  │
+        ┌─────────────────────────┼─────────────────────────┐
+        │                         │                         │
+        ▼                         ▼                         ▼
+┌─────────────────────┐ ┌─────────────────────┐ ┌─────────────────────┐
+│   InputHandler      │ │   PhysicsEngine     │ │   StateManager      │
+│     (INPUT)         │ │     (PHYSICS)       │ │     (STATE)         │
+├─────────────────────┤ ├─────────────────────┤ ├─────────────────────┤
+│ + IsInputHeld       │ │ + IsCharging        │ │ + CurrentStage      │
+│ + OnInputPressed    │ │ + StabForce         │ │ + OnStateChanged    │
+│ + OnInputReleased   │ │ + OnStageComplete   │ ├─────────────────────┤
+└─────────────────────┘ ├─────────────────────┤ │ + SetState()        │
+                        │ + ExecuteStage1()   │ │ + CanStartStage1()  │
+                        │ + ExecuteStage2()   │ │ + CanStartStage2()  │
+                        │ + StopCharging()    │ └─────────────────────┘
+                        └─────────────────────┘
+
+┌─────────────────────┐  ┌─────────────────────┐  ┌─────────────────────┐
+│   DebugManager      │  │      GameStage      │  │       Utils         │
+│     (DEBUG)         │  │      (ENUM)         │  │    (HELPERS)        │
+├─────────────────────┤  ├─────────────────────┤  ├─────────────────────┤
+│ - swordController   │  │ WaitingForFirstTap  │  │ PhysicsUtils        │
+├─────────────────────┤  │ Stage1InProgress    │  │ TransformUtils      │
+│ + ForceReset()      │  │ WaitingForSecondTap │  │ DebugUtils          │
+│ + TestStage1()      │  │ Stage2InProgress    │  └─────────────────────┘
+│ + TestStage2()      │  │ StabAttack          │
+└─────────────────────┘  │ Reset               │
+                         └─────────────────────┘
+```
+## Anti-patterns avoided
+
+### God class
+
+* Don’t make `SwordController` inherit input/state/physics—this creates a God class and tight coupling.
+* We use **composition over inheritance**: `SwordController` only orchestrates; input/state/physics stay in separate components with **small APIs**. This keeps SRP, prevents controller bloat, and lets you swap/extend modules safely.
+
+### Circular references
+
+* **Bidirectional links** (A ↔ B) create circular deps: fragile init order, hidden side-effects, and event/memory leaks.
+* We enforce a **one-way flow**: Input → Controller → State -> Physics, with feedback as **events to the controller only**. Modules never reference each other or the controller, keeping the graph acyclic and testable.
+
+### TechStack: Unity 6 • C# • Blender • URP • Input System
+---
+
 ## Changelog
 
 - **1.0.0** — Initial release (sample scene, two-stage action system, stand progression, debug tools).

@@ -17,7 +17,7 @@ public class SwordController : MonoBehaviour
     private InputHandler inputHandler;
     private PhysicsEngine physicsEngine;
     private StateManager stateManager;
-    private DebugManager debugManager;
+
 
     // Public Properties
     public GameObject CurrentStand { get => currentStand; set => currentStand = value; }
@@ -32,7 +32,6 @@ public class SwordController : MonoBehaviour
         inputHandler = GetComponent<InputHandler>();
         physicsEngine = GetComponent<PhysicsEngine>();
         stateManager = GetComponent<StateManager>();
-        debugManager = GetComponent<DebugManager>();
         rb = GetComponent<Rigidbody>();
 
         // Subscribe to events
