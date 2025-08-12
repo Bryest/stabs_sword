@@ -180,7 +180,3 @@ The modules are decoupled (input, state, physics), so you can swap the “sword�
 - **1.0.0** — Initial release (sample scene, two-stage action system, stand progression, debug tools).
 
 ---
-
-## Support
-
-Questions or feature requests? Add your support email/issue link here.
