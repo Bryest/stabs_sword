@@ -1,18 +1,29 @@
-# Tap–Hold Action Starter (Sword Sample)
+# Tap–Hold Action Starter (Sword Sample) ⚔️  
+**Unity clean architecture example – no God Classes, no circular references.**
 
 A compact, extensible **two-stage tap/hold action system** for Unity.  
-Stage 1 = initial jump. Stage 2 = hold to charge + rotate, release to perform a strong “stab/impulse”.  
-The modules are decoupled (input, state, physics), so you can swap the “sword” for anything (spear, drill, rocket punch).
+- **Stage 1:** Tap to jump.  
+- **Stage 2:** Hold to charge + rotate, release to perform a strong “stab” or impulse.  
+- Modules are fully decoupled — swap the “sword” for a spear, drill, rocket punch, etc.
 
 ---
 
-## Demo (Sample Scene)
+## 🎥 Demo (Sample Scene)
 
-![Mobile framing & sample stands](Images/SampleScene.png)
+![Mobile framing & sample stands](Images/SampleScene.png)  
+
+*(Tap → Jump, Hold → Charge/Rotate, Release → Impulse)*
 
 ---
 
-## What’s Included (Scripts)
+## ✨ Key Features  
+- **Composition over inheritance** – `SwordController` only orchestrates; each module has one clear job.  
+- **One-way flow** – Input → Controller → State → Physics.
+- **Single source of truth** – `StateManager` owns `GameStage` and guards transitions.  
+- **Event-driven** – modules talk via events, avoiding tight coupling and circular references.
+---
+
+## 📂 What’s Included (Scripts)  
 
 - `BaseDebugComponent.cs` – base class to centralize debug toggles/logs.  
 - `DebugManager.cs` – **test keys** and optional on-screen labels.  
@@ -27,7 +38,7 @@ The modules are decoupled (input, state, physics), so you can swap the “sword�
 
 ---
 
-## Requirements
+## 🛠 Requirements  
 
 - Unity **6000.1+** (URP or Built-in; screenshots use URP).  
 - New **Input System** package.  
@@ -36,27 +47,28 @@ The modules are decoupled (input, state, physics), so you can swap the “sword�
 
 ---
 
-## Quick Start
+## 🚀 Quick Start  
 
 1. **Create the Actor**  
    Add to your actor GameObject (with a `Rigidbody`):  
-   **InputHandler**, **PhysicsEngine**, **StateManager**, **DebugManager** *(optional)*, **SwordController**.
+   **InputHandler**, **PhysicsEngine**, **StateManager**, **DebugManager** *(optional)*, **SwordController**.  
+
    ![Sword](Images/Sword.png)
 
    **SwordController (Inspector):**  
-   ![SwordController inspector](Images/SwordController.png)
+   ![SwordController inspector](Images/SwordController.png)  
 
    **InputHandler (Inspector):**  
-   ![InputHandler inspector](Images/InputHandler.png)
+   ![InputHandler inspector](Images/InputHandler.png)  
 
    **PhysicsEngine (Inspector):**  
-   ![PhysicsEngine inspector](Images/PhysicsEngine.png)
+   ![PhysicsEngine inspector](Images/PhysicsEngine.png)  
 
    **StateManager (Inspector):**  
-   ![StateManager inspector](Images/StateManager.png)
+   ![StateManager inspector](Images/StateManager.png)  
 
    **DebugManager (Inspector):**  
-   ![DebugManager inspector](Images/DebugManager.png)
+   ![DebugManager inspector](Images/DebugManager.png)  
 
 2. **Create Stands**  
    - Each stand: GameObject with collider + **Stand** component.  
@@ -74,7 +86,7 @@ The modules are decoupled (input, state, physics), so you can swap the “sword�
 
 ---
 
-## How It Works
+## 🧠 How It Works  
 
 - `InputHandler` fires **OnInputPressed/OnInputReleased**.  
 - `SwordController` checks **StateManager** and drives **PhysicsEngine** to start Stage 1 or Stage 2.  
@@ -86,7 +98,7 @@ The modules are decoupled (input, state, physics), so you can swap the “sword�
 
 ---
 
-## Main Tunables
+## 📏 Main Tunables  
 
 **InputHandler**  
 - *Main Input Key* (default **Space**), *Enable Touch Input*.
@@ -102,16 +114,9 @@ The modules are decoupled (input, state, physics), so you can swap the “sword�
 
 **DebugManager**  
 - Default keys: **Q** (Stage 1 test), **E** (Stage 2 test; hold/release), **A** (Reset).
-
 ---
 
-## Integration Notes
-
-- Keep the stand **pivot** (child index 0) aligned to where the actor should rest.  
-- If the actor feels too floaty, increase `Rigidbody.mass` or reduce Stage 1 vertical force.  
-- For older Unity versions, replace `linearVelocity/linearDamping` with `velocity/drag` in helpers.
-
----
+## 📊 Architecture Diagram  
 
 ```text
 ┌─────────────────────────────────────────────────────────────────┐
@@ -160,6 +165,8 @@ The modules are decoupled (input, state, physics), so you can swap the “sword�
 └─────────────────────┘  │ Reset               │
                          └─────────────────────┘
 ```
+---
+
 ## Anti-patterns avoided
 
 ### God class
@@ -181,6 +188,7 @@ The modules are decoupled (input, state, physics), so you can swap the “sword�
 
 ---
 
-## Support
+## 📌 License  
+MIT License — free to use, learn from, and modify. Attribution appreciated.  
 
-Questions or feature requests? Add your support email/issue link here.
+---
