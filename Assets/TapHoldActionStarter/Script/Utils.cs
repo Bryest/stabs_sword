@@ -45,16 +45,3 @@ public static class TransformUtils
         transform.eulerAngles = new Vector3(0f, 90f, 0f);
     }
 }
-
-public static class DebugUtils
-{
-    /// <summary>
-    /// Debug helper - logs current stage to console
-    /// </summary>
-    public static void LogCurrentStage(GameStage currentStage, bool enableTestingAndDebug)
-    {
-        if (enableTestingAndDebug)
-            Debug.Log($"Current Stage: {currentStage}");
-    }
-
-}
